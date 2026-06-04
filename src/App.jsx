@@ -65,6 +65,22 @@ function ContributionGraph({ username }) {
   );
 }
 
+function VisitorCounter() {
+  const [count] = useState(() => {
+    const stored = Number(localStorage.getItem('sura-views') || '0');
+    const next = stored + 1;
+    localStorage.setItem('sura-views', String(next));
+    return next;
+  });
+
+  return (
+    <div className="visitor-counter glass-card">
+      <span className="visitor-label">views</span>
+      <span className="visitor-count">{count.toLocaleString()}</span>
+    </div>
+  );
+}
+
 function App() {
   const [bioText, setBioText] = useState('');
   const [bioIndex, setBioIndex] = useState(0);
@@ -75,6 +91,15 @@ function App() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const mouseRef = useRef(null);
   const cursorRef = useRef(null);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = 0.8;
+      audio.play().catch(() => {});
+    }
+  }, []);
 
   useEffect(() => {
     if (bioIndex >= BIOS.length) return;
@@ -104,7 +129,7 @@ function App() {
   }, []);
 
   const toggleMusic = () => {
-    const audio = document.getElementById('bgm');
+    const audio = audioRef.current;
     if (muted) { audio.play().catch(() => {}); setMuted(false); }
     else { audio.pause(); setMuted(true); }
   };
@@ -140,7 +165,9 @@ function App() {
         style={{ left: cursorPos.x, top: cursorPos.y }}
       />
 
-      <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" loop volume="0.8" />
+      <audio ref={audioRef} id="bgm" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" loop />
+
+      <VisitorCounter />
 
       <button className="music-btn" onClick={toggleMusic} aria-label="toggle music">
         {muted ? <Music size={16} /> : <Volume2 size={16} />}
