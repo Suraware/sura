@@ -3,8 +3,8 @@ import { Skull, Code, Cpu, Globe, Lock, Shield, Trophy, Gamepad2, Music, Volume2
 import './index.css';
 
 const BIOS = [
-  'learning c++ / html / lua / python // intermediate cybersecurity // ai prompting',
-  '2nd place — march 2026 ctf hackathon',
+  'learning c++ / lua / python',
+  'Working on new Projects',
   'just getting started. breaking things. building things.',
 ];
 
@@ -43,7 +43,7 @@ function App() {
 
   const toggleMusic = () => {
     const audio = document.getElementById('bgm');
-    if (muted) { audio.play().catch(() => {}); setMuted(false); }
+    if (muted) { audio.play().catch(() => { }); setMuted(false); }
     else { audio.pause(); setMuted(true); }
   };
 
@@ -113,12 +113,11 @@ function App() {
               <h2>skills</h2>
               <div className="skill-grid">
                 {[
-                  { icon: Code, name: 'Python', color: '#3776ab', lvl: 'learning' },
-                  { icon: Cpu, name: 'C++', color: '#00599c', lvl: 'learning' },
-                  { icon: Gamepad2, name: 'Lua / Luau', color: '#00a2ff', lvl: 'learning' },
-                  { icon: Globe, name: 'HTML', color: '#e34f26', lvl: 'learning' },
+                  { icon: Code, name: 'Python', color: '#3776ab', lvl: 'beginner' },
+                  { icon: Cpu, name: 'C++', color: '#00599c', lvl: 'beginner' },
+                  { icon: Gamepad2, name: 'Lua / Luau', color: '#00a2ff', lvl: 'beginner' },
                   { icon: Shield, name: 'Cybersecurity', color: '#ef4444', lvl: 'intermediate' },
-                  { icon: Lock, name: 'AI Prompting', color: '#8b5cf6', lvl: 'proficient' },
+                  { icon: Lock, name: 'Prompt Engineering', color: '#8b5cf6', lvl: 'proficient' },
                 ].map((s) => (
                   <div key={s.name} className="skill-chip glass-card">
                     <s.icon size={16} style={{ color: s.color }} />
@@ -157,13 +156,13 @@ function App() {
 
             <div className="about-text glass-card anim" style={anim(0.1)}>
               <p>
-                Just getting started on this journey. I'm learning <strong>C++</strong>,{' '}
-                <strong>Python</strong>, <strong>Lua/Luau</strong>, and <strong>HTML</strong> —
-                breaking things and building things along the way.
+                i write code and break stuff. mostly <strong>C++</strong>,{' '}
+                <strong>Python</strong>, <strong>Lua</strong>, and <strong>HTML</strong>.
+                not an expert yet but i'm getting there.
               </p>
               <p>
-                Intermediate at <strong>cybersecurity</strong> and proficient in{' '}
-                <strong>AI prompting</strong>. Placed <strong>2nd in a CTF hackathon in March 2026</strong>.
+                <strong>cybersecurity</strong> is where i spend most of my time.
+                got <strong>2nd place in a CTF hackathon</strong> so i must be doing something right.
               </p>
             </div>
 
@@ -222,7 +221,27 @@ function App() {
             <h1 className="anim" style={anim(0)}><span className="accent-gradient">projects</span></h1>
 
             <div className="proj-list anim" style={anim(0.1)}>
-              <div className="proj-card glass-card">
+              <a href="https://github.com/Suraware/AEGIS-main1" target="_blank" rel="noopener noreferrer" className="proj-card glass-card" style={{ textDecoration: 'none' }}>
+                <ExternalLink size={14} className="proj-icon" />
+                <div className="proj-head">
+                  <span className="proj-lang">Multi-language</span>
+                  <span className="proj-status live">public</span>
+                </div>
+                <h3>AEGIS</h3>
+                <p>World info platform — aggregates a lot of data. <a href="https://aegis-main1.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>Live demo ↗</a></p>
+              </a>
+
+              <a href="https://github.com/Suraware/Suraware" target="_blank" rel="noopener noreferrer" className="proj-card glass-card" style={{ textDecoration: 'none' }}>
+                <ExternalLink size={14} className="proj-icon" />
+                <div className="proj-head">
+                  <span className="proj-lang">Rust</span>
+                  <span className="proj-status live">public</span>
+                </div>
+                <h3>Suraware</h3>
+                <p>Go ransomware utilising ChaCha20 and ECIES encryption.</p>
+              </a>
+
+              <a href="https://github.com/Suraware/portfolio" target="_blank" rel="noopener noreferrer" className="proj-card glass-card" style={{ textDecoration: 'none' }}>
                 <ExternalLink size={14} className="proj-icon" />
                 <div className="proj-head">
                   <span className="proj-lang">React / Vite</span>
@@ -230,14 +249,14 @@ function App() {
                 </div>
                 <h3>Portfolio</h3>
                 <p>This site — glassmorphism design.</p>
-              </div>
+              </a>
             </div>
           </div>
         )}
       </div>
 
       <footer className="footer">
-        <span>made with ❤️ by sura &bull; <a href="https://github.com/Suraware" target="_blank" rel="noopener noreferrer" className="footer-link">source</a></span>
+        <span>made with ❤️ by sura &bull; <a href="https://github.com/Suraware/portfolio" target="_blank" rel="noopener noreferrer" className="footer-link">source</a></span>
       </footer>
     </div>
   );
