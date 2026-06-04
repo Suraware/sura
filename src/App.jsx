@@ -1,0 +1,246 @@
+import { useState, useEffect, useRef } from 'react';
+import { Skull, Code, Cpu, Globe, Lock, Shield, Trophy, Gamepad2, Music, Volume2, GitBranch, ExternalLink } from 'lucide-react';
+import './index.css';
+
+const BIOS = [
+  'learning c++ / html / lua / python // intermediate cybersecurity // ai prompting',
+  '2nd place — march 2026 ctf hackathon',
+  'just getting started. breaking things. building things.',
+];
+
+function App() {
+  const [bioText, setBioText] = useState('');
+  const [bioIndex, setBioIndex] = useState(0);
+  const [muted, setMuted] = useState(true);
+  const [page, setPage] = useState('home');
+  const mouseRef = useRef(null);
+
+  useEffect(() => {
+    if (bioIndex >= BIOS.length) return;
+    const full = BIOS[bioIndex];
+    let i = 0;
+    const interval = setInterval(() => {
+      setBioText(full.slice(0, i + 1));
+      i++;
+      if (i >= full.length) {
+        clearInterval(interval);
+        setTimeout(() => setBioIndex(prev => (prev + 1) % BIOS.length), 2500);
+      }
+    }, 45);
+    return () => clearInterval(interval);
+  }, [bioIndex]);
+
+  useEffect(() => {
+    const el = mouseRef.current;
+    if (!el) return;
+    const move = (e) => {
+      el.style.left = e.clientX + 'px';
+      el.style.top = e.clientY + 'px';
+    };
+    window.addEventListener('mousemove', move);
+    return () => window.removeEventListener('mousemove', move);
+  }, []);
+
+  const toggleMusic = () => {
+    const audio = document.getElementById('bgm');
+    if (muted) { audio.play().catch(() => {}); setMuted(false); }
+    else { audio.pause(); setMuted(true); }
+  };
+
+  const anim = (delay) => ({ animationDelay: `${delay}s` });
+
+  return (
+    <div className="page">
+      <div className="bg-effects">
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="orb orb-3"></div>
+        <div className="grid-bg"></div>
+      </div>
+
+      <div className="mouse-glow" ref={mouseRef}></div>
+
+      <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" loop volume="0.8" />
+
+      <button className="music-btn" onClick={toggleMusic} aria-label="toggle music">
+        {muted ? <Music size={16} /> : <Volume2 size={16} />}
+      </button>
+
+      <nav className="nav glass">
+        {['home', 'about', 'projects'].map(p => (
+          <button key={p} className={`nav-item ${page === p ? 'active' : ''}`} onClick={() => setPage(p)}>
+            {p}
+          </button>
+        ))}
+      </nav>
+
+      <div className="container" key={page}>
+
+        {page === 'home' && (
+          <div className="page-content">
+            <div className="hero-icon-wrap anim" style={anim(0)}>
+              <div className="hero-ring"></div>
+              <div className="hero-icon">
+                <Skull size={44} />
+              </div>
+              <div className="status-dot"></div>
+            </div>
+
+            <h1 className="hero-name anim" style={anim(0.1)}>
+              <span className="accent-gradient">SURA</span>
+            </h1>
+
+            <div className="badges anim" style={anim(0.15)}>
+              <span className="badge">security</span>
+              <span className="badge">ctf</span>
+              <span className="badge">dev</span>
+            </div>
+
+            <div className="typewriter glass-card anim" style={anim(0.2)}>
+              <span className="prompt">$</span>
+              <span className="tw-text">{bioText}</span>
+              <span className="cursor">▊</span>
+            </div>
+
+            <div className="social-row anim" style={anim(0.25)}>
+              <a href="https://github.com/Suraware" target="_blank" rel="noopener noreferrer" className="social-btn glass-card">
+                <GitBranch size={18} />
+                <span>GitHub</span>
+              </a>
+            </div>
+
+            <div className="hero-section anim" style={anim(0.3)}>
+              <h2>skills</h2>
+              <div className="skill-grid">
+                {[
+                  { icon: Code, name: 'Python', color: '#3776ab', lvl: 'learning' },
+                  { icon: Cpu, name: 'C++', color: '#00599c', lvl: 'learning' },
+                  { icon: Gamepad2, name: 'Lua / Luau', color: '#00a2ff', lvl: 'learning' },
+                  { icon: Globe, name: 'HTML', color: '#e34f26', lvl: 'learning' },
+                  { icon: Shield, name: 'Cybersecurity', color: '#ef4444', lvl: 'intermediate' },
+                  { icon: Lock, name: 'AI Prompting', color: '#8b5cf6', lvl: 'proficient' },
+                ].map((s) => (
+                  <div key={s.name} className="skill-chip glass-card">
+                    <s.icon size={16} style={{ color: s.color }} />
+                    <span>{s.name}</span>
+                    <span className="skill-lvl">{s.lvl}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-section anim" style={anim(0.35)}>
+              <h2>achievements</h2>
+              <div className="ach-list">
+                <div className="ach-item glass-card">
+                  <Trophy size={16} className="ach-icon gold" />
+                  <div>
+                    <strong>2nd Place — CTF Hackathon</strong>
+                    <span className="ach-meta">march 2026</span>
+                  </div>
+                </div>
+                <div className="ach-item glass-card">
+                  <Trophy size={16} className="ach-icon silver" />
+                  <div>
+                    <strong>3 Hackathons (2025–2026)</strong>
+                    <span className="ach-meta">attended & competed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {page === 'about' && (
+          <div className="page-content">
+            <h1 className="anim" style={anim(0)}>about <span className="accent-gradient">me</span></h1>
+
+            <div className="about-text glass-card anim" style={anim(0.1)}>
+              <p>
+                Just getting started on this journey. I'm learning <strong>C++</strong>,{' '}
+                <strong>Python</strong>, <strong>Lua/Luau</strong>, and <strong>HTML</strong> —
+                breaking things and building things along the way.
+              </p>
+              <p>
+                Intermediate at <strong>cybersecurity</strong> and proficient in{' '}
+                <strong>AI prompting</strong>. Placed <strong>2nd in a CTF hackathon in March 2026</strong>.
+              </p>
+            </div>
+
+            <h2 className="anim" style={anim(0.15)}>languages</h2>
+            <div className="skill-grid anim" style={anim(0.2)}>
+              {[
+                { icon: Code, name: 'Python', color: '#3776ab', lvl: 'learning' },
+                { icon: Cpu, name: 'C++', color: '#00599c', lvl: 'learning' },
+                { icon: Gamepad2, name: 'Lua / Luau', color: '#00a2ff', lvl: 'learning' },
+                { icon: Globe, name: 'HTML', color: '#e34f26', lvl: 'learning' },
+              ].map((s) => (
+                <div key={s.name} className="skill-chip glass-card">
+                  <s.icon size={16} style={{ color: s.color }} />
+                  <span>{s.name}</span>
+                  <span className="skill-lvl">{s.lvl}</span>
+                </div>
+              ))}
+            </div>
+
+            <h2 className="anim" style={anim(0.25)}>skills</h2>
+            <div className="skill-grid anim" style={anim(0.3)}>
+              <div className="skill-chip glass-card">
+                <Shield size={16} style={{ color: '#ef4444' }} />
+                <span>Cybersecurity</span>
+                <span className="skill-lvl">intermediate</span>
+              </div>
+              <div className="skill-chip glass-card">
+                <Lock size={16} style={{ color: '#8b5cf6' }} />
+                <span>AI Prompting</span>
+                <span className="skill-lvl">proficient</span>
+              </div>
+            </div>
+
+            <h2 className="anim" style={anim(0.35)}>achievements</h2>
+            <div className="ach-list anim" style={anim(0.4)}>
+              <div className="ach-item glass-card">
+                <Trophy size={16} className="ach-icon gold" />
+                <div>
+                  <strong>2nd Place — CTF Hackathon</strong>
+                  <span className="ach-meta">march 2026</span>
+                </div>
+              </div>
+              <div className="ach-item glass-card">
+                <Trophy size={16} className="ach-icon silver" />
+                <div>
+                  <strong>3 Hackathons (2025–2026)</strong>
+                  <span className="ach-meta">attended & competed</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {page === 'projects' && (
+          <div className="page-content">
+            <h1 className="anim" style={anim(0)}><span className="accent-gradient">projects</span></h1>
+
+            <div className="proj-list anim" style={anim(0.1)}>
+              <div className="proj-card glass-card">
+                <ExternalLink size={14} className="proj-icon" />
+                <div className="proj-head">
+                  <span className="proj-lang">React / Vite</span>
+                  <span className="proj-status live">live</span>
+                </div>
+                <h3>Portfolio</h3>
+                <p>This site — glassmorphism design.</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <footer className="footer">
+        <span>made with ❤️ by sura &bull; <a href="https://github.com/Suraware" target="_blank" rel="noopener noreferrer" className="footer-link">source</a></span>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
