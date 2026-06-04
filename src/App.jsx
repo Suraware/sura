@@ -68,7 +68,7 @@ function ContributionGraph({ username }) {
 function App() {
   const [bioText, setBioText] = useState('');
   const [bioIndex, setBioIndex] = useState(0);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [page, setPage] = useState('home');
   const [theme, setTheme] = useState('dark');
   const [transitioning, setTransitioning] = useState(false);
